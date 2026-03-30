@@ -2,12 +2,15 @@ import type { Metadata } from 'next';
 import { Outfit } from 'next/font/google';
 import './globals.css';
 import Providers from '@/components/Providers';
+import ThemeToggle from '@/components/ThemeToggle';
+import Link from 'next/link';
+import { Heart } from 'lucide-react';
 
 const outfit = Outfit({ subsets: ['latin'], variable: '--font-outfit' });
 
 export const metadata: Metadata = {
-  title: 'Fridge-to-Plate | Temukan Resep Masakan',
-  description: 'Aplikasi pencarian resep masakan berdasarkan bahan di kulkasmu!',
+  title: 'Fridge-to-Plate | Let your fridge decide',
+  description: 'Find amazing recipes based on ingredients you already have!',
 };
 
 export default function RootLayout({
@@ -16,9 +19,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="id">
-      <body className={`${outfit.variable} font-sans bg-slate-50 text-slate-900 antialiased min-h-screen`}>
+    <html lang="en" suppressHydrationWarning>
+      <body className={`${outfit.variable} font-sans bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 antialiased min-h-screen transition-colors duration-300`}>
         <Providers>
+          <div className="absolute top-4 right-4 sm:top-6 sm:right-6 z-50 flex items-center gap-3">
+            <Link 
+              href="/saved"
+              className="p-2 sm:p-2.5 rounded-full bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border border-slate-200/60 dark:border-slate-800 text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-500/10 transition-all shadow-sm flex items-center gap-2 group"
+              title="Saved Recipes"
+            >
+              <Heart className="w-5 h-5 group-hover:scale-110 transition-transform" />
+            </Link>
+            <ThemeToggle />
+          </div>
           {children}
         </Providers>
       </body>
