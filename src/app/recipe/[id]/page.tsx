@@ -1,19 +1,49 @@
 'use client';
 
-import { use } from 'react';
+import { use, useState, useEffect } from 'react';
 import { useRecipeDetails } from '@/hooks/useRecipes';
 import { useFavorites } from '@/hooks/useFavorites';
 import Link from 'next/link';
-import { ArrowLeft, Clock, Users, Heart, Activity } from 'lucide-react';
+import { ArrowLeft, Clock, Users, Heart, Activity, Sparkles } from 'lucide-react';
 import NutritionWidget from '@/components/features/NutritionWidget';
 import PriceEstimator from '@/components/features/PriceEstimator';
+import SubstituteModal from '@/components/features/SubstituteModal';
+import { cn } from '@/lib/utils';
 
 export default function RecipePage(props: { params: Promise<{ id: string }> }) {
   const params = use(props.params);
   const { data: recipe, isLoading, isError } = useRecipeDetails(params.id);
   const { isFavorite, addFavorite, removeFavorite, isLoaded } = useFavorites();
+  
+  const [userIngredients, setUserIngredients] = useState<string[]>([]);
+  const [substituteModal, setSubstituteModal] = useState<{ isOpen: boolean; name: string }>({ 
+    isOpen: false, 
+    name: '' 
+  });
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const stored = localStorage.getItem('fridge_to_plate_user_ingredients');
+      if (stored) {
+        try {
+          setUserIngredients(JSON.parse(stored));
+        } catch (e) {
+          console.error('Failed to parse user ingredients', e);
+        }
+      }
+    }
+  }, []);
 
   const saved = recipe ? isFavorite(recipe.id) : false;
+
+  const isMissed = (ingName: string) => {
+    if (userIngredients.length === 0) return false; // Default to not missed if no data
+    const lowerName = ingName.toLowerCase();
+    return !userIngredients.some(ui => {
+      const lowerUi = ui.toLowerCase();
+      return lowerName.includes(lowerUi) || lowerUi.includes(lowerName);
+    });
+  };
 
   if (isLoading) {
     return (
@@ -120,16 +150,35 @@ export default function RecipePage(props: { params: Promise<{ id: string }> }) {
                 <h2 className="text-xl font-bold text-slate-800 dark:text-slate-100 mb-4 flex items-center gap-2">
                   Ingredients
                 </h2>
-                <ul className="space-y-3">
-                  {recipe.extendedIngredients?.map((ing: any, i: number) => (
-                    <li key={`${ing.id}-${i}`} className="flex items-start gap-3 text-slate-600 dark:text-slate-300">
-                      <div className="w-1.5 h-1.5 rounded-full bg-orange-400 mt-2 shrink-0" />
-                      <div>
-                        <span className="font-semibold text-slate-700 dark:text-slate-200">{ing.amount} {ing.unit}</span>
-                        {' '}{ing.name}
-                      </div>
-                    </li>
-                  ))}
+                <ul className="space-y-4">
+                  {recipe.extendedIngredients?.map((ing: any, i: number) => {
+                    const missed = isMissed(ing.name);
+                    return (
+                      <li key={`${ing.id}-${i}`} className="flex items-start justify-between gap-3 text-slate-600 dark:text-slate-300 group/ing">
+                        <div className="flex items-start gap-3">
+                          <div className={cn(
+                            "w-1.5 h-1.5 rounded-full mt-2 shrink-0 transition-colors",
+                            missed ? "bg-rose-400 dark:bg-rose-500" : "bg-orange-400"
+                          )} />
+                          <div className="flex flex-col">
+                            <div>
+                              <span className="font-semibold text-slate-700 dark:text-slate-200">{ing.amount} {ing.unit}</span>
+                              {' '}{ing.name}
+                            </div>
+                            {missed && (
+                              <button 
+                                onClick={() => setSubstituteModal({ isOpen: true, name: ing.name })}
+                                className="flex items-center gap-1.5 mt-1.5 text-[11px] font-black text-orange-500 hover:text-orange-600 dark:text-orange-400 dark:hover:text-orange-300 transition-colors uppercase tracking-wider bg-orange-100/50 dark:bg-orange-500/10 px-2.5 py-1 rounded-full w-fit group-hover/ing:scale-105 origin-left"
+                              >
+                                <Sparkles className="w-3 h-3" />
+                                Find Substitutes
+                              </button>
+                            )}
+                          </div>
+                        </div>
+                      </li>
+                    );
+                  })}
                 </ul>
               </div>
               <NutritionWidget recipeId={recipe.id.toString()} />
@@ -170,6 +219,12 @@ export default function RecipePage(props: { params: Promise<{ id: string }> }) {
           </div>
         </div>
       </div>
+
+      <SubstituteModal 
+        isOpen={substituteModal.isOpen}
+        ingredientName={substituteModal.name}
+        onClose={() => setSubstituteModal({ ...substituteModal, isOpen: false })}
+      />
     </main>
   );
 }

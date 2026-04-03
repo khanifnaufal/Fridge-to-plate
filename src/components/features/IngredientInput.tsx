@@ -24,6 +24,10 @@ export default function IngredientInput({ onIngredientsChange }: IngredientInput
         const newArr = [...ingredients, ...newItems];
         setIngredients(newArr);
         onIngredientsChange(newArr);
+        // Persist to localStorage for missed ingredients detection
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('fridge_to_plate_user_ingredients', JSON.stringify(newArr));
+        }
       }
       setInputValue('');
     }
@@ -33,6 +37,9 @@ export default function IngredientInput({ onIngredientsChange }: IngredientInput
     const newArr = ingredients.filter((i) => i !== item);
     setIngredients(newArr);
     onIngredientsChange(newArr);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('fridge_to_plate_user_ingredients', JSON.stringify(newArr));
+    }
   };
 
   return (

@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { fetchRecipesByIngredients, fetchRecipeDetails } from '@/lib/api';
+import { fetchRecipesByIngredients, fetchRecipeDetails, fetchIngredientSubstitutes } from '@/lib/api';
 
 export const useRecipes = (ingredients: string[]) => {
   // Normalize query key to avoid refetching for same ingredients typed in different order
@@ -37,6 +37,16 @@ export const useRecipeDetails = (id: string) => {
     },
     enabled: !!id,
     staleTime: 1000 * 60 * 60 * 24, // 24h caching 
+    refetchOnWindowFocus: false,
+  });
+};
+
+export const useIngredientSubstitutes = (name: string) => {
+  return useQuery({
+    queryKey: ['substitutes', name.toLowerCase()],
+    queryFn: () => fetchIngredientSubstitutes(name),
+    enabled: !!name,
+    staleTime: 1000 * 60 * 60 * 24, // 24h caching
     refetchOnWindowFocus: false,
   });
 };
