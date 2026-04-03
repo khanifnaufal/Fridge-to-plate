@@ -2,7 +2,8 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { fetchRandomRecipes, RecipeResponse } from '@/lib/api';
-import { X, Sparkles, ChefHat } from 'lucide-react';
+import { X, Sparkles, ChefHat, ShoppingCart, CheckCircle2 } from 'lucide-react';
+import { useShoppingList } from '@/hooks/useShoppingList';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 
@@ -18,6 +19,8 @@ export default function GachaModal({ isOpen, onClose, recipes: initialRecipes }:
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isRolling, setIsRolling] = useState(false);
   const [selectedRecipe, setSelectedRecipe] = useState<RecipeResponse | null>(null);
+  const { addIngredients } = useShoppingList();
+  const [addedTemp, setAddedTemp] = useState(false);
 
   const startRoll = useCallback((itemsToRoll: RecipeResponse[]) => {
     if (!itemsToRoll || itemsToRoll.length === 0) return;
@@ -156,13 +159,34 @@ export default function GachaModal({ isOpen, onClose, recipes: initialRecipes }:
           ) : (
             <>
               {selectedRecipe && (
-                <Link 
-                  href={`/recipe/${selectedRecipe.id}`}
-                  className="w-full py-3.5 px-4 bg-gradient-to-r from-orange-500 to-rose-500 hover:from-orange-600 hover:to-rose-600 text-white font-bold rounded-xl text-center transition-all shadow-md hover:shadow-[0_0_15px_rgba(244,63,94,0.4)] flex items-center justify-center gap-2"
-                >
-                  <ChefHat className="w-5 h-5" />
-                  Let&apos;s Cook This!
-                </Link>
+                <>
+                  <Link 
+                    href={`/recipe/${selectedRecipe.id}`}
+                    className="w-full py-3.5 px-4 bg-gradient-to-r from-orange-500 to-rose-500 hover:from-orange-600 hover:to-rose-600 text-white font-bold rounded-xl text-center transition-all shadow-md hover:shadow-[0_0_15px_rgba(244,63,94,0.4)] flex items-center justify-center gap-2"
+                  >
+                    <ChefHat className="w-5 h-5" />
+                    Let&apos;s Cook This!
+                  </Link>
+                  <button
+                    onClick={() => {
+                      const allIngredients = selectedRecipe.usedIngredients || [];
+                      if (allIngredients.length > 0) {
+                        addIngredients(allIngredients);
+                        setAddedTemp(true);
+                        setTimeout(() => setAddedTemp(false), 2000);
+                      }
+                    }}
+                    className={cn(
+                      "w-full py-3 px-4 font-bold rounded-xl text-center transition-all flex items-center justify-center gap-2 border",
+                      addedTemp
+                        ? "bg-emerald-50 text-emerald-600 border-emerald-200 dark:bg-emerald-500/10 dark:text-emerald-400 dark:border-emerald-500/20"
+                        : "bg-white text-orange-500 border-orange-200 hover:bg-orange-50 dark:bg-slate-900 dark:text-orange-400 dark:border-orange-500/30 dark:hover:bg-orange-500/10"
+                    )}
+                  >
+                    {addedTemp ? <CheckCircle2 className="w-5 h-5" /> : <ShoppingCart className="w-5 h-5" />}
+                    {addedTemp ? "Added to Cart" : "Buy Ingredients"}
+                  </button>
+                </>
               )}
               <button
                 onClick={() => startRoll(recipes)}

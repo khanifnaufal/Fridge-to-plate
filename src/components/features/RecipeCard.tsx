@@ -1,9 +1,15 @@
+'use client';
+
 import { RecipeResponse } from '@/lib/api';
-import { ChefHat, AlertCircle } from 'lucide-react';
+import { ChefHat, AlertCircle, ShoppingCart, CheckCircle2 } from 'lucide-react';
+import { useShoppingList } from '@/hooks/useShoppingList';
+import { useState } from 'react';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
 
 export default function RecipeCard({ recipe }: { recipe: RecipeResponse }) {
+  const { addIngredients } = useShoppingList();
+  const [addedTemp, setAddedTemp] = useState(false);
   const totalIngredients = recipe.usedIngredientCount + recipe.missedIngredientCount;
   const matchPercentage = Math.round((recipe.usedIngredientCount / totalIngredients) * 100) || 0;
 
@@ -42,9 +48,28 @@ export default function RecipeCard({ recipe }: { recipe: RecipeResponse }) {
 
         {recipe.missedIngredientCount > 0 && (
           <div className="mt-4 pt-4 border-t border-slate-100 dark:border-slate-800/80 transition-colors">
-            <div className="flex items-center gap-1.5 text-xs font-semibold text-rose-500 dark:text-rose-400 mb-2">
-              <AlertCircle className="w-3.5 h-3.5" />
-              Need {recipe.missedIngredientCount} more:
+            <div className="flex items-center justify-between mb-2">
+              <div className="flex items-center gap-1.5 text-xs font-semibold text-rose-500 dark:text-rose-400">
+                <AlertCircle className="w-3.5 h-3.5" />
+                Need {recipe.missedIngredientCount} more:
+              </div>
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  addIngredients(recipe.missedIngredients);
+                  setAddedTemp(true);
+                  setTimeout(() => setAddedTemp(false), 2000);
+                }}
+                className={cn("flex items-center justify-center p-1.5 rounded-full transition-all border", 
+                  addedTemp 
+                    ? "bg-emerald-50 text-emerald-600 border-emerald-200 dark:bg-emerald-500/10 dark:text-emerald-400 dark:border-emerald-500/20" 
+                    : "bg-white text-orange-500 border-slate-200/60 hover:bg-orange-50 hover:border-orange-200 dark:bg-slate-900 dark:text-orange-400 dark:border-slate-800 dark:hover:bg-orange-500/10 dark:hover:border-orange-500/30"
+                )}
+                title="Add missing ingredients to shopping list"
+              >
+                {addedTemp ? <CheckCircle2 className="w-4 h-4" /> : <ShoppingCart className="w-4 h-4" />}
+              </button>
             </div>
             <div className="flex flex-wrap gap-1.5">
               {recipe.missedIngredients.slice(0, 3).map((ing) => (
