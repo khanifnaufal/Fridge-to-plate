@@ -73,19 +73,21 @@ export default function RecipePage(props: { params: Promise<{ id: string }> }) {
               {recipe.title}
             </h1>
             
-            {isLoaded && recipe && (
+            {recipe && (
               <div className="flex-shrink-0 flex flex-col items-end gap-3 self-start sm:self-center mr-2">
-                <button
-                  onClick={() => saved ? removeFavorite(recipe.id) : addFavorite(recipe)}
-                  className={`flex items-center justify-center gap-2 px-5 py-2.5 rounded-full text-sm font-bold transition-all duration-300 ${
-                    saved 
-                      ? 'bg-rose-100 text-rose-600 hover:bg-rose-200 dark:bg-rose-500/20 dark:text-rose-400 dark:hover:bg-rose-500/30 w-full sm:w-auto' 
-                      : 'bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700 w-full sm:w-auto'
-                  }`}
-                >
-                  <Heart className={`w-4 h-4 ${saved ? 'fill-current' : ''}`} />
-                  <span>{saved ? 'Saved Offline' : 'Save Offline'}</span>
-                </button>
+                {isLoaded && (
+                  <button
+                    onClick={() => saved ? removeFavorite(recipe.id) : addFavorite(recipe)}
+                    className={`flex items-center justify-center gap-2 px-5 py-2.5 rounded-full text-sm font-bold transition-all duration-300 ${
+                      saved 
+                        ? 'bg-rose-100 text-rose-600 hover:bg-rose-200 dark:bg-rose-500/20 dark:text-rose-400 dark:hover:bg-rose-500/30 w-full sm:w-auto' 
+                        : 'bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700 w-full sm:w-auto'
+                    }`}
+                  >
+                    <Heart className={`w-4 h-4 ${saved ? 'fill-current' : ''}`} />
+                    <span>{saved ? 'Saved Offline' : 'Save Offline'}</span>
+                  </button>
+                )}
                 <PriceEstimator recipeId={recipe.id.toString()} />
               </div>
             )}
