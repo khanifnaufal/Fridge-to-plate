@@ -21,7 +21,7 @@ export interface RecipeResponse {
 }
 
 const spoonacularApi = axios.create({
-  baseURL: 'https://api.spoonacular.com/recipes',
+  baseURL: 'https://api.spoonacular.com',
   params: {
     apiKey: process.env.NEXT_PUBLIC_SPOONACULAR_API_KEY,
   },
@@ -30,7 +30,7 @@ const spoonacularApi = axios.create({
 export const fetchRecipesByIngredients = async (ingredients: string[]): Promise<RecipeResponse[]> => {
   if (ingredients.length === 0) return [];
 
-  const { data } = await spoonacularApi.get<RecipeResponse[]>('/findByIngredients', {
+  const { data } = await spoonacularApi.get<RecipeResponse[]>('/recipes/findByIngredients', {
     params: {
       ingredients: ingredients.join(','),
       number: 12,
@@ -77,12 +77,12 @@ export interface RecipeDetails {
 }
 
 export const fetchRecipeDetails = async (id: string): Promise<RecipeDetails> => {
-  const { data } = await spoonacularApi.get<RecipeDetails>(`/${id}/information`);
+  const { data } = await spoonacularApi.get<RecipeDetails>(`/recipes/${id}/information`);
   return data;
 };
 
 export const fetchRandomRecipes = async (number: number = 10): Promise<RecipeResponse[]> => {
-  const { data } = await spoonacularApi.get('/random', {
+  const { data } = await spoonacularApi.get('/recipes/random', {
     params: { number },
   });
   
@@ -138,11 +138,24 @@ export interface PriceBreakdown {
 }
 
 export const fetchRecipeNutrition = async (id: string): Promise<NutritionWidget> => {
-  const { data } = await spoonacularApi.get<NutritionWidget>(`/${id}/nutritionWidget.json`);
+  const { data } = await spoonacularApi.get<NutritionWidget>(`/recipes/${id}/nutritionWidget.json`);
   return data;
 };
 
 export const fetchRecipePriceBreakdown = async (id: string): Promise<PriceBreakdown> => {
-  const { data } = await spoonacularApi.get<PriceBreakdown>(`/${id}/priceBreakdownWidget.json`);
+  const { data } = await spoonacularApi.get<PriceBreakdown>(`/recipes/${id}/priceBreakdownWidget.json`);
+  return data;
+};
+
+export interface IngredientSubstitutes {
+  ingredient: string;
+  substitutes: string[];
+  message: string;
+}
+
+export const fetchIngredientSubstitutes = async (name: string): Promise<IngredientSubstitutes> => {
+  const { data } = await spoonacularApi.get<IngredientSubstitutes>('/food/ingredients/substitutes', {
+    params: { ingredientName: name },
+  });
   return data;
 };
