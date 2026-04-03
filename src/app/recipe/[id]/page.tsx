@@ -5,6 +5,7 @@ import { useRecipeDetails } from '@/hooks/useRecipes';
 import { useFavorites } from '@/hooks/useFavorites';
 import Link from 'next/link';
 import { ArrowLeft, Clock, Users, Heart, Activity } from 'lucide-react';
+import NutritionWidget from '@/components/features/NutritionWidget';
 
 export default function RecipePage(props: { params: Promise<{ id: string }> }) {
   const params = use(props.params);
@@ -125,6 +126,7 @@ export default function RecipePage(props: { params: Promise<{ id: string }> }) {
                   ))}
                 </ul>
               </div>
+              <NutritionWidget recipeId={recipe.id.toString()} />
             </div>
 
             {/* Main Content: Instructions */}
