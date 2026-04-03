@@ -115,7 +115,34 @@ export interface NutritionWidget {
   good: Nutrient[];
 }
 
+export interface PriceIngredient {
+  name: string;
+  price: number; // in US cents
+  image: string;
+  amount: {
+    metric: {
+      value: number;
+      unit: string;
+    };
+    us: {
+      value: number;
+      unit: string;
+    };
+  };
+}
+
+export interface PriceBreakdown {
+  ingredients: PriceIngredient[];
+  totalCost: number; // in US cents
+  totalCostPerServing: number; // in US cents
+}
+
 export const fetchRecipeNutrition = async (id: string): Promise<NutritionWidget> => {
   const { data } = await spoonacularApi.get<NutritionWidget>(`/${id}/nutritionWidget.json`);
+  return data;
+};
+
+export const fetchRecipePriceBreakdown = async (id: string): Promise<PriceBreakdown> => {
+  const { data } = await spoonacularApi.get<PriceBreakdown>(`/${id}/priceBreakdownWidget.json`);
   return data;
 };
