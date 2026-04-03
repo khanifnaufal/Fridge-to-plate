@@ -98,3 +98,24 @@ export const fetchRandomRecipes = async (number: number = 10): Promise<RecipeRes
   }));
 };
 
+
+export interface Nutrient {
+  title: string;
+  amount: string;
+  indented: boolean;
+  percentOfDailyNeeds: number;
+}
+
+export interface NutritionWidget {
+  calories: string;
+  carbs: string;
+  fat: string;
+  protein: string;
+  bad: Nutrient[];
+  good: Nutrient[];
+}
+
+export const fetchRecipeNutrition = async (id: string): Promise<NutritionWidget> => {
+  const { data } = await spoonacularApi.get<NutritionWidget>(`/${id}/nutritionWidget.json`);
+  return data;
+};
