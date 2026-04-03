@@ -148,7 +148,6 @@ export const fetchRecipePriceBreakdown = async (id: string): Promise<PriceBreakd
 };
 
 export interface IngredientSubstitutes {
-  status: string;
   ingredient: string;
   substitutes: string[];
   message: string;

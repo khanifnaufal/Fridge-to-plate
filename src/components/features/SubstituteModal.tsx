@@ -83,8 +83,8 @@ export default function SubstituteModal({ ingredientName, isOpen, onClose }: Sub
             ) : isError ? (
               <div className="py-8 text-center bg-rose-50 dark:bg-rose-950/20 rounded-3xl border border-rose-100 dark:border-rose-900/50">
                 <AlertCircle className="w-10 h-10 text-rose-500 mx-auto mb-3" />
-                <p className="text-rose-600 dark:text-rose-400 font-bold">Oops! Terjadi kesalahan.</p>
-                <p className="text-xs text-rose-400 mt-1">Gagal memuat saran pengganti.</p>
+                <p className="text-rose-600 dark:text-rose-400 font-bold">Oops! Something went wrong.</p>
+                <p className="text-xs text-rose-400 mt-1">Failed to load substitute suggestions.</p>
               </div>
             ) : data?.substitutes && data.substitutes.length > 0 ? (
               <div className="grid gap-3">
