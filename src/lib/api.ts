@@ -159,3 +159,57 @@ export const fetchIngredientSubstitutes = async (name: string): Promise<Ingredie
   });
   return data;
 };
+
+export interface MealPlanRecipe {
+  id: number;
+  imageType: string;
+  title: string;
+  readyInMinutes: number;
+  servings: number;
+  sourceUrl: string;
+}
+
+export interface DayMealPlan {
+  meals: MealPlanRecipe[];
+  nutrients: {
+    calories: number;
+    protein: number;
+    fat: number;
+    carbohydrates: number;
+  };
+}
+
+export interface WeeklyMealPlan {
+  week: {
+    monday: DayMealPlan;
+    tuesday: DayMealPlan;
+    wednesday: DayMealPlan;
+    thursday: DayMealPlan;
+    friday: DayMealPlan;
+    saturday: DayMealPlan;
+    sunday: DayMealPlan;
+  };
+}
+
+export const generateMealPlan = async (timeFrame: 'week' = 'week', targetCalories?: number): Promise<WeeklyMealPlan> => {
+  const { data } = await spoonacularApi.get<WeeklyMealPlan>('/mealplanner/generate', {
+    params: { timeFrame, targetCalories },
+  });
+  return data;
+};
+
+export const searchRecipes = async (query: string, number: number = 10): Promise<RecipeResponse[]> => {
+  const { data } = await spoonacularApi.get('/recipes/complexSearch', {
+    params: { query, number },
+  });
+  
+  return data.results.map((r: any) => ({
+    id: r.id,
+    title: r.title,
+    image: r.image,
+    usedIngredientCount: 0,
+    missedIngredientCount: 0,
+    missedIngredients: [],
+    usedIngredients: []
+  }));
+};
