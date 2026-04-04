@@ -4,8 +4,9 @@ import './globals.css';
 import Providers from '@/components/Providers';
 import ThemeToggle from '@/components/ThemeToggle';
 import Link from 'next/link';
-import { Heart, Calendar, User } from 'lucide-react';
+import { Heart, Calendar } from 'lucide-react';
 import CartIcon from '@/components/features/CartIcon';
+import UserAccount from '@/components/features/UserAccount';
 
 const outfit = Outfit({ subsets: ['latin'], variable: '--font-outfit' });
 
@@ -39,6 +40,7 @@ export default function RootLayout({
             >
               <Heart className="w-5 h-5 group-hover:scale-110 transition-transform" />
             </Link>
+            <UserAccount />
             <ThemeToggle />
           </div>
           {children}
