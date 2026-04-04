@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { supabase } from '@/lib/supabase';
+import { supabase, isSupabaseConfigured } from '@/lib/supabase';
 import { Mail, Lock, Loader2, ArrowRight } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
@@ -17,6 +17,12 @@ export default function AuthForm() {
     e.preventDefault();
     setLoading(true);
     setError(null);
+
+    if (!isSupabaseConfigured()) {
+      setError('Supabase connection is not configured correctly. Please check your .env.local file and restart the development server.');
+      setLoading(false);
+      return;
+    }
 
     try {
       if (isLogin) {
