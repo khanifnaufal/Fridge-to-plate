@@ -17,7 +17,7 @@ export function useMealPlan(userId: string | undefined) {
   const [isLoading, setIsLoading] = useState(true);
 
   const fetchMealPlan = useCallback(async () => {
-    if (!userId) return;
+    if (!userId || !supabase) return;
     setIsLoading(true);
     const { data, error } = await supabase
       .from('meal_plans')
