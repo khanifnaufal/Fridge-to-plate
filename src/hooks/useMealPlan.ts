@@ -37,7 +37,9 @@ export function useMealPlan(userId: string | undefined) {
   }, [fetchMealPlan]);
 
   const addMeal = async (day: string, slot: number, recipe: any) => {
-    if (!userId) return;
+    if (!userId || !supabase) {
+      throw new Error('Supabase client is not configured');
+    }
 
     const { data, error } = await supabase
       .from('meal_plans')
@@ -64,7 +66,7 @@ export function useMealPlan(userId: string | undefined) {
   };
 
   const removeMeal = async (day: string, slot: number) => {
-    if (!userId) return;
+    if (!userId || !supabase) return;
 
     const { error } = await supabase
       .from('meal_plans')
@@ -79,12 +81,12 @@ export function useMealPlan(userId: string | undefined) {
   };
 
   const clearWeek = async () => {
-    if (!userId) return;
+    if (!userId || !supabase) return;
     const { error } = await supabase
       .from('meal_plans')
       .delete()
       .eq('user_id', userId);
-    
+
     if (error) {
       console.error('Error clearing week:', error);
     } else {

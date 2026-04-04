@@ -27,6 +27,7 @@ export default function LoginPage() {
         <div className="flex flex-col items-center">
           <Link 
             href="/"
+            aria-label="Back to home"
             className="mb-8 p-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm hover:shadow-md transition-shadow group self-start"
           >
             <ArrowLeft className="w-5 h-5 text-slate-600 dark:text-slate-400 group-hover:-translate-x-1 transition-transform" />

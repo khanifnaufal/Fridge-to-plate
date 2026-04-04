@@ -160,7 +160,7 @@ export default function MealPlannerView({ userId }: { userId: string }) {
                   <button
                     onClick={clearWeek}
                     className="px-5 py-3 text-sm font-bold text-slate-500 dark:text-slate-400 hover:text-rose-500 bg-slate-100/50 dark:bg-slate-800/50 rounded-2xl transition-all"
-                    disabled={isLoading}
+                    disabled={isLoading || isGenerating}
                   >
                     Clear All
                   </button>

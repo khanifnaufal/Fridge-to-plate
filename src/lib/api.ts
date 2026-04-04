@@ -191,7 +191,7 @@ export interface WeeklyMealPlan {
   };
 }
 
-export const generateMealPlan = async (timeFrame: 'day' | 'week' = 'week', targetCalories?: number): Promise<WeeklyMealPlan> => {
+export const generateMealPlan = async (timeFrame: 'week' = 'week', targetCalories?: number): Promise<WeeklyMealPlan> => {
   const { data } = await spoonacularApi.get<WeeklyMealPlan>('/mealplanner/generate', {
     params: { timeFrame, targetCalories },
   });
