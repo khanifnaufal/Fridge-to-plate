@@ -8,58 +8,56 @@ Powered by [Spoonacular API](https://spoonacular.com/food-api), this app smartly
 
 ## ✨ Features
 
-- 🔍 **Smart Ingredient Search**: Simply type in what you have in your fridge, and the app will match the best recipes based on a strictly calculated match percentage.
-- 🎯 **Match Percentage Indicator**: Clearly see which recipes you can cook right away and what ingredients you are missing.
-- 🎰 **"Feeling Lucky?" (Gacha Randomizer)**: Don't know what to cook? Click the magic button on the home page for a fast, roulette-style animation that picks a random secret recipe for you!
-- 💾 **Offline Favorites**: Found a recipe you love? Hit the **Save Offline** button on the recipe page. The complete recipe details (including ingredients and instructions) are saved locally to your device via `localStorage` so you can view them anytime, even without an internet connection!
-- 🌓 **Dark Mode Support**: Seamless integration with a modern Dark/Light theme toggle powered by `next-themes`.
-- 🎨 **Beautiful UI/UX**: Built with a sleek, vibrant design featuring dynamic gradients, glassmorphism, and smooth micro-animations using `tailwindcss-animate` and Framer-inspired CSS transitions.
-- ⚡ **Optimized Data Fetching**: Utilizes `@tanstack/react-query` for incredibly fast, cached, and reliable data fetching without unnecessary re-renders.
+- 📅 **Weekly Meal Planner**: Plan your week with a premium "Gourmet Scheduler". Organize Breakfast, Lunch, and Dinner with an intuitive grid.
+- 🔄 **Cloud Sync (Supabase)**: Created an account to securely save and sync your meal plans across all your devices.
+- 🖱️ **Drag-and-Drop Scheduling**: Seamlessly move your saved recipes from the "Collectibles" sidebar directly into your weekly calendar using `dnd-kit`.
+- 🧠 **Ingredient Autocomplete & Semantic Search**: Type naturally and get instant suggestions. The app understands semantic categories (e.g., searching for "Meat" includes Steak, Ribs, and more).
+- 🛒 **Smart Shopping List**: Automatically generate a checklist of ingredients needed for your weekly meal plan, so you never forget an item at the store.
+- 🎰 **"Feeling Lucky?" (Gacha Randomizer)**: Don't know what to cook? Use the magic roulette to pick a random "Secret Recipe".
+- 📊 **Nutrition Dashboard**: Professional-grade nutrition breakdown with interactive doughnut charts for calories, protein, fat, and carbs.
+- 💰 **Price Estimator**: Real-time cost estimation per serving, with automatic USD to IDR conversion.
+- 🔄 **Ingredient Substitutes**: Missing something? Get instant AI-powered recommendations for ingredient alternatives.
+- 💾 **Offline Favorites**: Save full recipe details (ingredients & instructions) to your device for offline viewing.
+- 🌓 **Dark Mode & Premium UI**: A stunning interface featuring glassmorphism, vibrant gradients, and smooth micro-animations.
 
 ---
 
 ## 🛠️ Tech Stack
 
 - **Framework**: [Next.js (App Router)](https://nextjs.org/) (v16+)
-- **UI Library**: [React](https://react.dev/) (v19)
-- **Styling**: [Tailwind CSS](https://tailwindcss.com/) (v4)
-- **State Management & Fetching**: [TanStack/React Query](https://tanstack.com/query/latest)
-- **Icons**: [Lucide React](https://lucide.dev/)
+- **Authentication & Database**: [Supabase](https://supabase.com/)
+- **UI & Icons**: [Tailwind CSS](https://tailwindcss.com/) (v4), [Lucide React](https://lucide.dev/)
+- **State Management**: [TanStack/React Query](https://tanstack.com/query/latest)
+- **Drag & Drop**: [@dnd-kit/core](https://dnd-kit.com/)
+- **Charts**: [Recharts](https://recharts.org/)
+- **Animations**: Native CSS Transitions & `tailwindcss-animate`
 - **HTTP Client**: [Axios](https://axios-http.com/)
-- **Animation**: Native CSS Transitions & `tailwindcss-animate`
 
 ---
 
 ## 🚀 Getting Started
 
-Follow these steps to set up the project locally on your machine.
-
 ### Prerequisites
 
-- Node.js (v18 or higher recommended)
-- A Spoonacular API Key. You can get a free one by registering at [Spoonacular API Console](https://spoonacular.com/food-api/console).
+- Node.js (v18 or higher)
+- [Spoonacular API Key](https://spoonacular.com/food-api/console)
+- [Supabase Project](https://supabase.com/) (URL and Anon Key)
 
-### Installation
+### Installation & Setup
 
-1. **Clone the repository:**
+1. **Clone & Install:**
    ```bash
    git clone https://github.com/khanifnaufal/Fridge-to-plate.git
    cd Fridge-to-plate
-   ```
-
-2. **Install dependencies:**
-   ```bash
    npm install
-   # or
-   yarn install
-   # or
-   pnpm install
    ```
 
-3. **Set up environment variables:**
-   Create a `.env.local` file in the root directory and add your Spoonacular API key:
+2. **Environment Variables:**
+   Create a `.env.local` file in the root directory:
    ```env
-   NEXT_PUBLIC_SPOONACULAR_API_KEY=your_api_key_here
+   NEXT_PUBLIC_SPOONACULAR_API_KEY=your_spoonacular_key
+   NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
    ```
 
 4. **Run the development server:**
@@ -85,6 +83,3 @@ Follow these steps to set up the project locally on your machine.
 
 Contributions, issues, and feature requests are welcome! Feel free to check the [issues page](https://github.com/khanifnaufal/Fridge-to-plate/issues).
 
-## 📝 License
-
-This project is open-source and available under the [MIT License](LICENSE).

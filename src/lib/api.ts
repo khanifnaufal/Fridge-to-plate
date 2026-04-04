@@ -198,7 +198,7 @@ export const generateMealPlan = async (timeFrame: 'week' = 'week', targetCalorie
   return data;
 };
 
-export const searchRecipes = async (query: string, number: number = 10): Promise<RecipeResponse[]> => {
+export const searchRecipes = async (query: string, number: number = 15): Promise<RecipeResponse[]> => {
   const { data } = await spoonacularApi.get('/recipes/complexSearch', {
     params: { query, number },
   });
@@ -212,4 +212,19 @@ export const searchRecipes = async (query: string, number: number = 10): Promise
     missedIngredients: [],
     usedIngredients: []
   }));
+};
+
+export interface AutocompleteIngredient {
+  name: string;
+  image: string;
+  id?: number;
+  aisle?: string;
+}
+
+export const autocompleteIngredients = async (query: string, number: number = 5): Promise<AutocompleteIngredient[]> => {
+  if (!query.trim()) return [];
+  const { data } = await spoonacularApi.get<AutocompleteIngredient[]>('/food/ingredients/autocomplete', {
+    params: { query, number, metaInformation: true },
+  });
+  return data;
 };
