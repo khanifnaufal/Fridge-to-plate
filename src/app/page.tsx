@@ -29,17 +29,15 @@ export default function Home() {
         </p>
       </div>
 
-      {ingredients.length === 0 && (
-        <div className="w-full relative z-10 mb-6 flex justify-center animate-in fade-in slide-in-from-bottom-4 duration-500">
-          <button
-            onClick={() => setIsGachaOpen(true)}
-            className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-amber-200 to-orange-200 hover:from-amber-300 hover:to-orange-300 dark:from-amber-500/20 dark:to-orange-500/20 dark:hover:from-amber-500/30 dark:hover:to-orange-500/30 text-amber-800 dark:text-amber-300 rounded-full font-bold transition-all transform hover:scale-105 hover:-translate-y-1 shadow-md hover:shadow-lg border border-amber-300/50 dark:border-amber-500/30"
-          >
-            <Sparkles className="w-5 h-5" />
-            <span>Feeling Lucky? (Pick Random)</span>
-          </button>
-        </div>
-      )}
+      <div className="w-full relative z-10 mb-6 flex justify-center animate-in fade-in slide-in-from-bottom-4 duration-500">
+        <button
+          onClick={() => setIsGachaOpen(true)}
+          className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-amber-200 to-orange-200 hover:from-amber-300 hover:to-orange-300 dark:from-amber-500/20 dark:to-orange-500/20 dark:hover:from-amber-500/30 dark:hover:to-orange-500/30 text-amber-800 dark:text-amber-300 rounded-full font-bold transition-all transform hover:scale-105 hover:-translate-y-1 shadow-md hover:shadow-lg border border-amber-300/50 dark:border-amber-500/30"
+        >
+          <Sparkles className="w-5 h-5" />
+          <span>Feeling Lucky? (Pick Random)</span>
+        </button>
+      </div>
 
       <div className="w-full relative z-10 mb-12 sm:mb-16">
         <IngredientInput onIngredientsChange={setIngredients} />
